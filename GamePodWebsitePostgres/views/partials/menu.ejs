@@ -1,0 +1,11 @@
+    <nav class="d-flex navbar navbar-dark bg-dark">
+      <a class="navbar-brand" href="/">The Game Pod</a>
+      <% var accountSpacer = 'l'; %>
+      <% if (user) {
+        var tmp = '<p class="navbar-brand ml-auto" id="user"> Signed In As: ' + user + '</p>'; 
+        accountSpacer = '1'; %>
+        <%- tmp %>
+      <%};%>
+      <a class="navbar-brand m<%- accountSpacer %>-auto" id="account" href="/account">Account</a>
+      <a class="navbar-brand m1-auto" href="/stats">Statistics</a>
+    </nav>

@@ -1,0 +1,45 @@
+<%- include('../partials/header') %>
+<%- include('../partials/menu') %>
+    <div class="container">
+      <h3 class="accountText">Create Account</h3>
+      <form class="accountForm" action="/signup/submit" method="post">
+        <div class="form-group">
+          <label for="un">Username</label>
+          <% if (username) { 
+            var tmp = '<input type="text" name="un" class="form-control" maxlength="45" value=' + username + '>' %>
+            <%- tmp %>
+          <%}
+          else {
+            var tmp = '<input type="text" name="un" class="form-control"  maxlength="45">' %>
+            <%- tmp %>
+          <%};%>
+        </div>
+        <div class="form-group">
+          <label for="pw">Password</label>
+          <% if (password) { 
+            var tmp = '<input type="password" name="pw" class="form-control" maxlength="45" value=' + password + '>' %>
+            <%- tmp %>
+          <%}
+          else {
+            var tmp = '<input type="password" name="pw" class="form-control" maxlength="45">' %>
+            <%- tmp %>
+          <%};%>
+        </div>
+        <% if (errors) {
+          errors.forEach(function(error){
+            if (error.length <= 51) {
+              var tmp = "<p class='errorbox'>" + error + "</p>"; %>
+              <%- tmp %>
+            <%} 
+            else {
+              var tmp = "<p class='errorbox'>Error Displaying Error Message</p>"; %>
+              <%- tmp %>
+            <%}
+          });
+        }%>
+        <button type="submit" class="btn btn-block submit">Sign Up</button>
+        <a href="/account" class="btn button" role="button">Already Have Account</a>
+      </form>
+    </div>
+  </body>
+</html>

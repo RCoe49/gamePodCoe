@@ -1,0 +1,209 @@
+@import url('https://fonts.googleapis.com/css2?family=Cousine&display=swap');
+
+.container{
+	padding: 40px;
+}
+
+.navbar-brand{
+	font-family: 'Cousine', monospace;
+}
+
+#account{
+	padding:20px;
+}
+
+#user{
+	margin: 0% 0% 0% 0%;
+	padding:20px;
+	color:grey;
+}
+
+.gamelink, .card-img-top, .border-dark{
+	border-radius: 50px;
+	box-shadow: 0px 1px 10px 10px rgba(130, 50, 200, 0.2), 0 10px 5px 0 rgba(215, 215, 215, 0.19);
+}
+
+.jumbotron{
+	/*margin-left: 50px;*/
+	transition: margin 1s;
+}
+
+.blackjack{
+	background-image: url('../img/blackjack.jpg');
+}
+
+.helicopter{
+  background-image: url('../img/hgflying.png');
+  background-repeat: no-repeat;
+	background-size: cover;
+}
+
+.snake{
+	background-image: url('../img/snake.png');
+}
+
+.walking{
+	background-image: url('../img/walking.png');
+	background-repeat: no-repeat;
+  background-size: auto;
+}
+
+.pong{
+	background-image: url('../img/pong.png');
+}
+
+.lead{
+	padding: 20px 30px 20px 30px;
+	margin-right: 100px;
+	background-color: rgb(0,0,0,0.7);
+}
+
+.accountText{
+	margin: 0 auto;
+	text-align: center;
+	color: white;
+}
+
+.submit{
+	color:white;
+	background-color:gray;
+}
+
+.button{
+	color:white;
+	background-color:gray;
+	margin: 4% 0% 0% 0%;
+	text-align: center;
+}
+
+.accountForm{
+	color:white;
+	padding: 10% 30% 30% 30%;
+}
+
+.errorbox{
+	background-color:rgb(51, 16, 11);
+	border: 2px solid red;
+	border-radius: 5px;
+	margin-left: 0%;
+}
+
+body {
+	background-color: black;
+}
+
+header{
+	margin-top: -50px;
+	padding-bottom: 30px;
+
+}
+
+h1{
+	color: white;
+	font-size: 5em;
+	margin-left: 50px;
+	transition: margin 1s;
+}
+
+h2{
+	color: white;
+	margin-left: 50px;
+	transition: margin 1s;
+}
+
+p, ol{
+	color: white;
+	text-align: justify;
+	margin-left: 50px;
+}
+
+th, td{
+	color: white;
+}
+
+.tablehead{
+	background-color: gray;
+	animation-name: headColor;
+  animation-duration: 1s;
+}
+
+th, .scores{
+	opacity: 100;
+	animation-name: displayRows;
+  	animation-duration: 2s;
+}
+
+@keyframes displayRows {
+  from {opacity: 0;}
+  to {opacity: 100;}
+}
+
+@keyframes headColor{
+	from {background-color: black;}
+	to {background-color: gray;}
+}
+
+#gameWrapper{
+	margin: auto;
+	display: block;
+	width: 90%;
+}
+
+.statSection{
+  border: 2px solid transparent;
+  border-radius: 5px;
+  border-image: linear-gradient(to bottom, rgb(78, 0, 141), rgb(100, 30, 30));
+  border-image-slice: 1;
+  margin: 2%;
+}
+
+.statEntry{
+  border: 2px solid green;
+  border-radius: 5px;
+  background-image: linear-gradient(to right, rgb(0, 0, 0), rgb(61, 61, 61));
+  margin: 2%;
+  padding: 1%;
+  font-size: large;
+}
+
+.statGame{
+  border: 2px solid green;
+  border-radius: 5px;
+  background-image: linear-gradient(to right, rgb(0, 0, 0), rgb(61, 21, 21));
+  margin: 2%;
+  padding: 1%;
+  font-size: 200%;
+  text-align: center;
+}
+
+#helicopterStart, #helicopterRetry{
+	display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#helicopterGame{
+	background-color: gray;
+	display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 70%;
+}
+
+#pongContainer
+{
+	padding: 0px;
+    height: 600px;
+    width: 400px;
+    margin-left: 5%;
+    overflow: hidden;
+    border: 1px solid black;
+    margin-top: 20px;
+    position: relative;
+    background-color: black;
+}
+
+.score
+{
+    font-size: 3em;
+}

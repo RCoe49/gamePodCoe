@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>BlackJack Game</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <title>The Game Pod</title>
+	<!-- <link rel='icon' href='../resources/img/favicon.ico' type='image/x-icon'/> -->
+	<link href="css/gpstyle.css" rel="stylesheet">
+
+</head>
+
+<body>
+  <nav class="d-flex navbar navbar-dark bg-dark">
+      <a class="navbar-brand" href="main.html">The Game Pod</a>
+      <a class="navbar-brand ml-auto" id="account" href="account.html">Account</a>
+      <a class="navbar-brand m1-auto" href="settings.html">Settings</a>
+    </nav>
+  <div>
+    <div>
+      <h1>BlackJack Game</h1>
+      <div id="message">BlackJack</div>
+      <div id="start">
+        <button id="btnstart" type="button" onclick="Start()" class="btn">Start Game</button>
+      </div>
+      <div class="total">Total $<span id="dollars">100</span><br>Bet Amount $<input type="number" id="mybet" value="5" min="1" max="100"><button id="maxbet" type="button" onclick="maxbet()" class="btn">Max Bet</button>
+      </div>
+      <div id="output">
+        Dealer Hand : <span id="dValue"></span>
+        <div id="dealerHolder"></div>
+        Player Hand : <span id="pValue"></span>
+        <div id="playerHolder"></div>
+        <div id="myactions">
+          <button id="btnhold" type="button" onclick="cardAction('hold')" class="btn">Hold</button>
+          <button id="btnhit" type="button" onclick="cardAction('hit')" class="btn">Hit</button>
+          <button id="btndouble" type="button" onclick="cardAction('double')" class="btn">Double</button>
+        </div>
+        <div>
+          <button id="btndeal" type="button" onclick="dealNew()" class="btn">Deal</button>
+        </div>
+      </div>
+      <div>
+      </div>
+      <script src="script.js"></script>
+</body>
+</html>

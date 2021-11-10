@@ -1,0 +1,76 @@
+<%- include('../partials/header') %>
+<%- include('../partials/menu') %>
+    <div class="container">
+      <h3 class="accountText">You Are Currently Signed In As: <%- user %></h3>
+      <form class="accountForm" action="/manage/submit" method="post">
+        <button type="button" class="btn btn-block button" onclick="toggleCPW()">Change Password</button>
+        <div id="changePassword" style="display: none;">
+          <!-- Old password field -->
+          <div class="form-group">
+            <label for="opw">Old Password</label>
+            <% if (opw) { 
+              var tmp = '<input type="password" name="opw" class="form-control" maxlength="45" value=' + opw + '>' %>
+              <%- tmp %>
+            <%}
+            else {
+              var tmp = '<input type="password" name="opw" class="form-control" maxlength="45">' %>
+              <%- tmp %>
+            <%};%>
+          </div>
+          <!-- New password field -->
+          <div class="form-group">
+            <label for="npw">New Password</label>
+            <% if (npw) { 
+              var tmp = '<input type="password" name="npw" class="form-control" maxlength="45" value=' + npw + '>' %>
+              <%- tmp %>
+            <%}
+            else {
+              var tmp = '<input type="password" name="npw" class="form-control" maxlength="45">' %>
+              <%- tmp %>
+            <%};%>
+          </div>
+          <!-- Error checking -->
+          <% if (errors) {
+            errors.forEach(function(error){
+              if (error.length <= 51) {
+                var tmp = "<p class='errorbox'>" + error + "</p>"; %>
+                <%- tmp %>
+              <%} 
+              else {
+                var tmp = "<p class='errorbox'>Error Displaying Error Message</p>"; %>
+                <%- tmp %>
+              <%}
+            });
+          }%>
+          <!-- New password submit -->
+          <button type="submit" class="btn btn-block submit">Submit</button>
+        </div>
+        <!-- Sign out button -->
+        <a href="/manage/logout" class="btn btn-block button" role="button">Sign Out</a>
+      </form>
+    </div>
+
+    <script>
+      function toggleCPW() {
+        var CPWDiv = document.getElementById("changePassword");
+        if (window.getComputedStyle(CPWDiv).display == "none") {
+          CPWDiv.style.display = "block";
+          CPWDiv.style.backgroundColor = "rgb(50, 50, 50)";
+          CPWDiv.style.borderRadius = "5px";
+        }
+        else {
+          CPWDiv.style.display = "none";
+        };
+      }
+    </script>
+
+    <% if (errors) {
+      var tmp = '<script> toggleCPW() </script>';
+    }
+    else {
+      var tmp = "";
+    };%>
+    <%- tmp %>
+
+  </body>
+</html>

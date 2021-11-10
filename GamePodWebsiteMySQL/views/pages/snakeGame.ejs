@@ -1,0 +1,231 @@
+<%- include('../partials/header') %>
+<%- include('../partials/menu') %>
+    <div class="container">
+      <h1>Snake Game</h1>
+      <div class="jumbotron snake">
+        <h2 class="display-4">Summary</h2>
+        <p class="lead">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Adipiscing commodo elit at imperdiet. Massa tempor nec feugiat nisl pretium. Leo a diam sollicitudin tempor id eu nisl. Nulla aliquet porttitor lacus luctus accumsan tortor posuere. Lectus nulla at volutpat diam ut venenatis. Proin sed libero enim sed faucibus. Nibh tellus molestie nunc non blandit massa enim nec. Erat nam at lectus urna. Ante in nibh mauris cursus. Eget est lorem ipsum dolor. Aenean euismod elementum nisi quis eleifend quam adipiscing vitae proin.</p>
+        <hr class="my-4">
+      </div>
+      <h2>Instructions</h2>
+      <p>Quisque id diam vel quam elementum. Aenean pharetra magna ac placerat vestibulum. Augue mauris augue neque gravida in fermentum et. Nunc sed augue lacus viverra vitae congue eu consequat ac. Posuere morbi leo urna molestie at elementum eu facilisis. Dictum non consectetur a erat nam at.</p>
+      <p>Quam vulputate dignissim suspendisse in est ante in nibh. Tincidunt tortor aliquam nulla facilisi. Egestas diam in arcu cursus euismod quis viverra nibh. Tortor posuere ac ut consequat semper viverra nam.</p>
+      <p>Tellus at urna condimentum mattis pellentesque id. Mauris ultrices eros in cursus turpis massa. Et ligula ullamcorper malesuada proin.</p>
+    </div>
+
+    <div style="margin: auto; width: 500px;">
+      <%if (user) {
+        var tmp = (
+          '<form class="form" action="/snakeGame" method="post">' +
+            '<button class="submit">Submit Score</button>' +
+            '<input type="text" name="score" id="scoreLink" value="0" readonly="true" style="display: none;">' +
+          '</form>');%>
+        <%- tmp %>
+      <%}%>
+
+      <div id="score" style="color: white;">0</div>
+      <canvas id="snakeboard" width="400" height="400"></canvas>
+    </div>
+
+    <style>
+      //Our main playing board
+      #snakeboard {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+      }
+      //The main score displayed content screen 
+      #score {
+          text-align: center;
+          font-size: 140px;
+      }
+    </style>
+
+    <script>
+      //Where a large majority of the functions will take place 
+      const board_border = 'black';
+      const board_background = "grey";
+      const snake_col = 'red';
+      const snake_border = 'blue';
+      //Our spawn point
+      //Will try to write more code to randomize the spawn of the snake
+      let snake = [
+          { x: 200, y: 200 },
+          { x: 190, y: 200 },
+          { x: 180, y: 200 },
+          { x: 170, y: 200 },
+          { x: 160, y: 200 }
+      ]
+  
+      let score = 0;
+      // True if changing direction
+      let changing_direction = false;
+      // Horizontal velocity
+      let food_x;
+      let food_y;
+      //Implement an increasing speed function for the snake 
+      let dx = 15;
+      // Vertical velocity
+      let dy = 0;
+  
+  
+      // Get the board of play
+      const snakeboard = document.getElementById("snakeboard");
+      // Return a 2d grid that we can use to function on the snake game 
+      const snakeboard_ctx = snakeboard.getContext("2d");
+      // Start game
+      main();
+  
+      gen_food();
+  
+      document.addEventListener("keydown", change_direction);
+  
+      // main function called repeatedly to keep the game running
+      function main() {
+  
+          if (has_game_ended()) return;
+  
+          changing_direction = false;
+          setTimeout(function onTick() {
+              clear_board();
+              drawFood();
+              move_snake();
+              drawSnake();
+              // Repeat
+              main();
+          }, 100)
+      }
+  
+      // draw a border around the canvas
+      function clear_board() {
+          //  Select the colour to fill the drawing
+          snakeboard_ctx.fillStyle = board_background;
+          //  Select the colour for the border of the canvas
+          snakeboard_ctx.strokestyle = board_border;
+          // Draw a "filled" rectangle to cover the entire canvas
+          snakeboard_ctx.fillRect(0, 0, snakeboard.width, snakeboard.height);
+          // Draw a "border" around the entire canvas
+          snakeboard_ctx.strokeRect(0, 0, snakeboard.width, snakeboard.height);
+      }
+  
+      // Draw the snake on the canvas
+      function drawSnake() {
+          // Draw each part
+          snake.forEach(drawSnakePart)
+      }
+  
+      function drawFood() {
+          snakeboard_ctx.fillStyle = 'lightgreen';
+          snakeboard_ctx.strokestyle = 'darkgreen';
+          snakeboard_ctx.fillRect(food_x, food_y, 10, 10);
+          snakeboard_ctx.strokeRect(food_x, food_y, 10, 10);
+      }
+  
+      // Draw one snake part
+      function drawSnakePart(snakePart) {
+  
+          // Set the colour of the snake part
+          snakeboard_ctx.fillStyle = snake_col;
+          // Set the border colour of the snake part
+          snakeboard_ctx.strokestyle = snake_border;
+          // Draw a "filled" rectangle to represent the snake part at the coordinates
+          // the part is located
+          snakeboard_ctx.fillRect(snakePart.x, snakePart.y, 10, 10);
+          // Draw a border around the snake part
+          snakeboard_ctx.strokeRect(snakePart.x, snakePart.y, 10, 10);
+      }
+  
+      function has_game_ended() {
+          for (let i = 4; i < snake.length; i++) {
+              if (snake[i].x === snake[0].x && snake[i].y === snake[0].y) return true
+          }
+          const hitLeftWall = snake[0].x < 0;
+          const hitRightWall = snake[0].x > snakeboard.width - 10;
+          const hitToptWall = snake[0].y < 0;
+          const hitBottomWall = snake[0].y > snakeboard.height - 10;
+          return hitLeftWall || hitRightWall || hitToptWall || hitBottomWall
+      }
+  
+      function random_food(min, max) {
+          return Math.round((Math.random() * (max - min) + min) / 10) * 10;
+      }
+  
+      function gen_food() {
+          //Random X coordinate
+          food_x = random_food(0, snakeboard.width - 10);
+          //Random Y coordinate
+          food_y = random_food(0, snakeboard.height - 10);
+          //If the food spawns in the snake, respawn it somewhere else 
+          snake.forEach(function has_snake_eaten_food(part) {
+              const has_eaten = part.x == food_x && part.y == food_y;
+              if (has_eaten) gen_food();
+          });
+      }
+  
+      function change_direction(event) {
+          const LEFT_KEY = 37;
+          const RIGHT_KEY = 39;
+          const UP_KEY = 38;
+          const DOWN_KEY = 40;
+          if (event.which == LEFT_KEY || event.which == UP_KEY || event.which == RIGHT_KEY || event.which == DOWN_KEY) {
+            event.preventDefault();
+          }
+  
+          // Prevent the snake from reversing
+          if (changing_direction) return;
+          changing_direction = true;
+          const keyPressed = event.keyCode;
+          const goingUp = dy === -10;
+          const goingDown = dy === 10;
+          const goingRight = dx === 10;
+          const goingLeft = dx === -10;
+          if (keyPressed === LEFT_KEY && !goingRight) {
+              dx = -10;
+              dy = 0;
+          }
+          if (keyPressed === UP_KEY && !goingDown) {
+              dx = 0;
+              dy = -10;
+          }
+          if (keyPressed === RIGHT_KEY && !goingLeft) {
+              dx = 10;
+              dy = 0;
+          }
+          if (keyPressed === DOWN_KEY && !goingUp) {
+              dx = 0;
+              dy = 10;
+          }
+      }
+  
+      function move_snake() {
+          // Create the new Snake's head
+          const head = { x: snake[0].x + dx, y: snake[0].y + dy };
+          // Add the new head to the beginning of snake body
+          snake.unshift(head);
+          const has_eaten_food = snake[0].x === food_x && snake[0].y === food_y;
+          if (has_eaten_food) {
+              // Increase score
+              score += 5;
+              // Display score on screen
+              document.getElementById('score').innerHTML = score;
+              document.getElementById('scoreLink').value = score;
+              // Generate new food location
+              gen_food();
+          } else {
+              // Remove the last part of snake body
+              snake.pop();
+          }
+      }
+  
+      /**
+       * function endgame(){
+       * when the game ends, display a final message screen showing points
+       * and other highscores
+       * Need to implement the ability to send data to the main base
+       * }**/
+  
+    </script>
+
+  </body>
+</html>

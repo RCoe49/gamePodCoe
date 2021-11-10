@@ -1,0 +1,23 @@
+.container{
+	padding: 40px;
+}
+
+#pongContainer
+{
+	padding: 0px;
+    height: 600px;
+    width: 400px;
+    margin-left: 5%;
+    overflow: hidden;
+    border: 1px solid black;
+    margin-top: 20px;
+    position: relative;
+    background-color: black;
+}
+
+.score
+{
+    font-size: 3em;
+}
+
+

@@ -1,0 +1,101 @@
+@import url('https://fonts.googleapis.com/css2?family=Cousine&display=swap');
+
+body {
+	background-color: black;
+}
+canvas{
+	background-color: gray;
+	display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 70%;
+}
+#helicopterStart, #helicopterRetry{
+	display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+#helicopterStart{
+	visibility: visible;
+}
+#helicopterRetry{
+	visibility: hidden;
+}
+.container{
+	padding: 40px;
+}
+
+.navbar-brand{
+	font-family: 'Cousine', monospace;
+}
+
+#account{
+	padding:20px;
+}
+
+.gamelink, .card-img-top, .border-dark{
+	border-radius: 50px;
+	box-shadow: 0px 1px 10px 10px rgba(130, 50, 200, 0.2), 0 10px 5px 0 rgba(215, 215, 215, 0.19);
+}
+.jumbotron{
+	/*margin-left: 50px;*/
+	transition: margin 1s;
+}
+.blackjack{
+	background-image: url('../img/blackjack.jpg');
+}
+.helicopter{
+	background-image: url('../img/hgflying.png');
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+.snake{
+	background-image: url('../img/snake.png');
+}
+.walking{
+	background-image: url('../img/walking.jpg');
+}
+.pong{
+	background-image: url('../img/pong.png');
+}
+.lead{
+	padding: 20px 30px 20px 30px;
+	margin-right: 100px;
+	background-color: rgb(0,0,0,0.7);
+}
+.login{
+	margin: 0 auto;
+	text-align: center;
+	color: white;
+}
+.submit{
+	color:white;
+	background-color:gray;
+}
+.signin{
+	color:white;
+	padding: 10% 30% 30% 30%;;
+}
+
+header{
+	margin-top: -50px;
+	padding-bottom: 30px;
+
+}
+
+h1{
+	color: white;
+	font-size: 5em;
+	margin-left: 50px;
+	transition: margin 1s;
+}
+h2{
+	color: white;
+	margin-left: 50px;
+	transition: margin 1s;
+}
+p, ol{
+	color: white;
+	text-align: justify;
+	margin-left: 50px;
+}

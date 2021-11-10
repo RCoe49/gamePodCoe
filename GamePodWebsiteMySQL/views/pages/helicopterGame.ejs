@@ -1,0 +1,38 @@
+<%- include('../partials/header') %>
+<%- include('../partials/menu') %>
+    <div class="container">
+      <h1>Helicopter Game</h1>
+        <div class="jumbotron helicopter">
+          <h2 class="display-4">Summary</h2>
+          <p class="lead">Fly a helicopter through a field of dangerous obstacles! How long can you survive?</p>
+          <hr class="my-4">
+        </div>
+        <h2>Instructions</h2>
+        <ol>
+          <li>Click the "Start" button to load the game area. <img src="../../resources/img/hgflying.png" height="150px" width="300px"></li>
+          <li>Hold down the "Shift" key to move the helicopter up and release it to coast back down. <img src="../../resources/img/shift.png" height="50px" width="150px"></li>
+          <li>The game ends when you crash into a wall. Avoid them to get a higher score! <img src="../../resources/img/hgcrash.png" height="150px" width="300px"></li>
+        </ol>
+      </div>
+      <button class="button" id="helicopterStart" onclick="startGame(); window.scrollTo(0,document.body.scrollHeight); 
+        document.getElementById('helicopterStart').style.visibility = 'hidden'; 
+        document.getElementById('retryButton').style.visibility = 'visible'; 
+        // document.getElementById('score').style.visibility = 'visible';
+        ">Start</button>
+      <form class="form" action="/helicopterGame" method="get">
+        <button class="submit" id="retryButton" style="visibility: hidden; margin-left: 15%;">Retry</button>
+      </form>
+      <%if (user) {
+        var tmp = (
+          '<form class="form" action="/helicopterGame" method="post">' +
+            '<button class="submit" id="submitButton" style="display: none; margin-left: 15%;">Submit Score</button>' +
+            '<input type="text" name="score" id="score" value="0" readonly="true" style="display: none;">' +
+          '</form>');%>
+        <%- tmp %>
+      <%}%>
+      <div id="game">
+        <!-- Game will go here -->
+      </div>
+    <script type="text/javascript" src="../../resources/scripts/helicopter.js"></script>
+  </body>
+</html>

@@ -1,0 +1,165 @@
+<%- include('../partials/header') %>
+<%- include('../partials/menu') %>
+  <div class="container-fluid">
+    <h3 class="accountText">Statistics</h3>
+    <div class="row">
+      <div class="col statSection">
+        <h3 class="accountText">Personal High Scores</h3>
+        <p class="statGame"> Snake Game </p>
+
+        <%
+        var tmp = '';
+        
+        if (user) { 
+          if (data) {
+            Object.keys(data[0][0]).forEach(function(key){
+              if (key != 'gameId' && key != 'playerId') {
+                tmp += '<p class="statEntry"> ' + data[0][0][key] + ' </p>';
+              }
+            });
+          }
+        }
+        else {
+          tmp = '<p class="statEntry"> Sign in to see personal statistics. </p>'
+        }%>
+        <%- tmp %>
+        
+        <p class="statGame"> Helicopter Game </p>
+
+        <%
+        var tmp = '';
+        
+        if (user) { 
+          if (data) {
+            Object.keys(data[1][0]).forEach(function(key){
+              if (key != 'gameId' && key != 'playerId') {
+                tmp += '<p class="statEntry"> ' + data[1][0][key] + ' </p>';
+              }
+            });
+          }
+        }
+        else {
+          tmp = '<p class="statEntry"> Sign in to see personal statistics. </p>'
+        }%>
+        <%- tmp %>
+
+        <p class="statGame"> Walking Simulator </p>
+
+        <%
+        var tmp = '';
+        
+        if (user) { 
+          if (data) {
+            Object.keys(data[2][0]).forEach(function(key){
+              if (key != 'gameId' && key != 'playerId') {
+                tmp += '<p class="statEntry"> ' + data[2][0][key] + ' </p>';
+              }
+            });
+          }
+        }
+        else {
+          tmp = '<p class="statEntry"> Sign in to see personal statistics. </p>'
+        }%>
+        <%- tmp %>
+
+        <p class="statGame"> Black Jack </p>
+
+        <%
+        var tmp = '';
+        
+        if (user) { 
+          if (data) {
+            Object.keys(data[3][0]).forEach(function(key){
+              if (key != 'gameId' && key != 'playerId') {
+                tmp += '<p class="statEntry"> ' + data[3][0][key] + ' </p>';
+              }
+            });
+          }
+        }
+        else {
+          tmp = '<p class="statEntry"> Sign in to see personal statistics. </p>'
+        }%>
+        <%- tmp %>
+
+        <p class="statGame"> Pong Without Friends </p>
+
+        <%
+        var tmp = '';
+        
+        if (user) { 
+          if (data) {
+            Object.keys(data[4][0]).forEach(function(key){
+              if (key != 'gameId' && key != 'playerId') {
+                tmp += '<p class="statEntry"> ' + data[4][0][key] + ' </p>';
+              }
+            });
+          }
+        }
+        else {
+          tmp = '<p class="statEntry"> Sign in to see personal statistics. </p>'
+        }%>
+        <%- tmp %>
+
+      </div>
+      <div class="col statSection">
+        <h3 class="accountText">Global High Scores</h3>
+        <p class="statGame"> Snake Game </p>
+
+        <%
+        var tmp = '';
+        if (data) {
+          for (var i = 0; i < data[5].length; i++) {
+            tmp += '<p class="statEntry"> Username: ' + data[5][i].un + '. Score: ' + data[5][i].score + '. </p>';
+          }
+        }%>
+        <%- tmp %>
+
+        <p class="statGame"> Helicopter Game </p>
+
+        <%
+        var tmp = '';
+        if (data) {
+          for (var i = 0; i < data[6].length; i++) {
+            tmp += '<p class="statEntry"> Username: ' + data[6][i].un + '. Score: ' + data[6][i].score + '. </p>';
+          }
+        }%>
+        <%- tmp %>
+
+        <p class="statGame"> Walking Simulator </p>
+
+        <%
+        var tmp = '';
+        if (data) {
+          for (var i = 0; i < data[7].length; i++) {
+            tmp += '<p class="statEntry"> Username: ' + data[7][i].un + '. Score: ' + data[7][i].score + '. </p>';
+          }
+        }%>
+        <%- tmp %>
+
+        <p class="statGame"> Black Jack </p>
+
+        <%
+        var tmp = '';
+        if (data) {
+          for (var i = 0; i < data[8].length; i++) {
+            tmp += '<p class="statEntry"> Username: ' + data[8][i].un + '. Score: ' + data[8][i].score + '. </p>';
+          }
+        }%>
+        <%- tmp %>
+
+        <p class="statGame"> Pong Without Friends </p>
+
+        <%
+        var tmp = '';
+        if (data) {
+          for (var i = 0; i < data[9].length; i++) {
+            tmp += '<p class="statEntry"> Username: ' + data[9][i].un + '. Score: ' + data[9][i].score + '. </p>';
+          }
+        }%>
+        <%- tmp %>
+      
+      </div>
+    </div>
+  </div>
+  </body>
+</html>

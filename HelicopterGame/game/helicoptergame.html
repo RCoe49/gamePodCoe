@@ -1,0 +1,38 @@
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="helicopter.js"></script>
+    <title>Helicopter Game</title>
+	<!-- <link rel='icon' href='../resources/img/favicon.ico' type='image/x-icon'/> -->
+	<link href="../css/gpstyle.css" rel="stylesheet">
+  </head>
+  <body>
+    <nav class="d-flex navbar navbar-dark bg-dark">
+      <a class="navbar-brand" href="../main.html">The Game Pod</a>
+      <a class="navbar-brand ml-auto" id="account" href="account.html">Account</a>
+      <a class="navbar-brand m1-auto" href="settings.html">Settings</a>
+    </nav>
+    <div class="container">
+      <h1>Helicopter Game</h1>
+      <div class="jumbotron helicopter">
+        <h2 class="display-4">Summary</h2>
+        <p class="lead">Fly a helicopter through a field of dangerous obstacles! How long can you survive?</p>
+        <hr class="my-4">
+      </div>
+      <h2>Instructions</h2>
+      <ol>
+        <li>Click the "Start" button to load the game area. <img src="../img/hgflying.png" height="150px" width="300px"></li>
+        <li>Hold down the "Shift" key to move the helicopter up and release it to coast back down. <img src="../img/shift.png" height="50px" width="150px"></li>
+        <li>The game ends when you crash into a wall. Avoid them to get a higher score! <img src="../img/hgcrash.png" height="150px" width="300px"></li>
+      </ol>
+      <button class="button" id="helicopterStart" onclick="startGame(); window.scrollTo(0,document.body.scrollHeight); document.getElementById('helicopterStart').style.visibility = 'hidden'; document.getElementById('helicopterRetry').style.visibility = 'visible';">Start</button>
+      <button class="button" id="helicopterRetry" onclick="window.location.reload();">Retry</button>
+    </div>
+    
+  </body>
+</html>

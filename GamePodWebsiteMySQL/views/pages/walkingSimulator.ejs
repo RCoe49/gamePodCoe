@@ -1,0 +1,238 @@
+<%- include('../partials/header') %>
+<%- include('../partials/menu') %>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.2/TweenMax.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/three.js/r122/three.js'></script>
+    <script src = '../../resources/scripts/GLTFLoader.js'></script>
+
+    <div class="container">
+      <h1>Walking Simulator</h1>
+      <div class="jumbotron walking">
+        <h2 class="display-4">Summary</h2>
+        <p class="lead">Walk around a fun forest scene featuring collision and custom 3D models. Collect yellow cubes to earn points, and enjoy the scenery.</p>
+        <hr class="my-4">
+      </div>
+      <h2>Instructions</h2>
+      <p>Use the keys W, A, S, and D to walk forwards, left, backwards, and right respectively. Use the arrow keys to look around.
+      Walking too close to a tree or wall will cause you to collide with them, and walking close to a randomly placed yellow cube
+      will earn you a point and teleport the cube to a random position. Good luck!</p>
+    </div>
+
+    <!-- Allow score to be recorded -->
+    <%if (user) {
+      var tmp = (
+        '<form class="form" action="/walkingSim" method="post" style="margin-left: 5%;">' +
+          '<button class="submit">Submit Score</button>' +
+          '<input type="text" name="score" id="score" value="0" readonly="true" style="display: none;">' +
+        '</form>');%>
+      <%- tmp %>
+    <%}%>
+
+
+    <div id="gameWrapper">
+      <div id="game" style="position: absolute;">
+        <!-- Game will go here -->
+      </div>
+    </div>
+
+    <div id="text" style="position: absolute; margin-left: 5%; margin-top: 42%; font-size: large;">
+      <!-- Score will go here -->
+    </div>
+
+  </body>
+
+  <script>
+    //  Sources used: 
+    //    https://www.youtube.com/watch?v=6oFvqLfRnsU
+    //    https://threejs.org/docs/#manual/en/introduction/Creating-a-scene
+
+    //  Set up the scene, camera, and renderer
+    var asp = (window.innerWidth * 0.9) / (window.innerHeight * 0.8);
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(60, asp, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({antialias: true});
+    renderer.setSize(window.innerWidth * 0.9, window.innerHeight * 0.8);
+    renderer.setClearColor('#a1b3b1');
+    camera.position.set(0,1,5);
+
+    //  Add the game to the document body
+    document.getElementById('game').appendChild(renderer.domElement);
+    document.getElementById('text').innerHTML = "<p>Score: 0</p>";
+
+    //  Resize the game on window resize
+    window.addEventListener('resize', () => {
+      renderer.setSize(window.innerWidth * 0.9, window.innerHeight * 0.8);
+      camera.aspect = (window.innerWidth * 0.9) / (window.innerHeight * 0.8);
+      camera.updateProjectionMatrix();
+    })
+
+    //  Create useful variables
+    var posX = 0;
+    var posZ = 5;
+    var th = 0;
+    var ph = 0; //  90 in world coords
+    var score = 0;
+    var boxPos = [0,0];
+
+    //  cube
+    const geometry = new THREE.BoxGeometry();
+    const material = new THREE.MeshLambertMaterial({color: 0xfcec03});
+    const cube = new THREE.Mesh(geometry, material);
+    cube.scale.set(0.2, 0.2, 0.2);
+    cube.position.set(0, 1, 0);
+
+    //  Create some lights
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+    directionalLight.position.set(10,10,10);
+    scene.add(directionalLight);
+
+    const light = new THREE.AmbientLight(0xffffff, 3); // soft white light
+    scene.add(light);
+
+    //  Set tree positions
+    var treeArr = [];
+    for (var i = 0; i < 300; i++) {
+      var x = 0;
+      var z = 0;
+      var tmp = [x, z]
+
+      while ((x == 0 && z == 0) || (x == 0 && z == 5) || treeArr.includes(tmp)) {
+        x = Math.floor(Math.random() * 70) -35;
+        z = Math.floor(Math.random() * 70) -35;
+        tmp = [x, z];
+      }
+      
+      treeArr = treeArr.concat([tmp]);
+    }
+
+    //  Collision
+    function checkPos(nPosX, nPosZ) {
+      //  Run into blocker
+      if (nPosX < 38 && nPosX > -38 && nPosZ < 38 && nPosZ > -38) {
+        var colliding = false;
+        for (var i = 0; i < 300; i++) {
+          if (Math.sqrt(((nPosX - treeArr[i][0]) ** 2) + ((nPosZ - treeArr[i][1]) ** 2)) < 0.5) {
+            colliding = true;
+          }
+        }
+        if (colliding == false) {
+          posX = nPosX;
+          posZ = nPosZ;
+          camera.position.set(posX, 1, posZ);
+        }
+      }
+
+      //  Run into point
+      //console.log("Point pos: " + boxPos);
+      if (Math.sqrt(((nPosX - boxPos[0]) ** 2) + ((nPosZ - boxPos[1]) ** 2)) < 0.5) {
+        score += 1;
+        document.getElementById('score').value = score;
+        boxPos[0] = Math.floor(Math.random() * 70) -35;
+        boxPos[1] = Math.floor(Math.random() * 70) -35;
+        while (treeArr.includes(boxPos)) {
+          boxPos[0] = Math.floor(Math.random() * 70) -35;
+          boxPos[1] = Math.floor(Math.random() * 70) -35;
+        }
+        cube.position.set(boxPos[0], 1, boxPos[1]);
+      }
+      //  Display text
+      document.getElementById('text').innerHTML = "<p>Score: " + score + "</p>";
+    };
+
+    //  Add the cube here after the new position is set
+    scene.add(cube);
+
+    //  Key input
+    document.addEventListener("keydown", onDocumentKeyDown);
+    function onDocumentKeyDown(event) {
+      var keyCode = event.which;
+      var nPosX = posX;
+      var nPosZ = posZ;
+
+      //  WASD movement
+      if (keyCode == 87) {          //  W
+        nPosX = -0.2 * Math.sin(th) + posX;
+        nPosZ = -0.2 * Math.cos(th) + posZ;
+      } else if (keyCode == 83) {   //  S
+        nPosX = -0.2 * Math.sin(th - Math.PI) + posX;
+        nPosZ = -0.2 * Math.cos(th - Math.PI) + posZ;
+      } else if (keyCode == 65) {   //  A
+        nPosX = -0.2 * Math.sin(th + Math.PI / 2) + posX;
+        nPosZ = -0.2 * Math.cos(th + Math.PI / 2) + posZ;
+      } else if (keyCode == 68) {   //  D
+        nPosX = -0.2 * Math.sin(th - Math.PI / 2) + posX;
+        nPosZ = -0.2 * Math.cos(th - Math.PI / 2) + posZ;
+      }
+      checkPos(nPosX, nPosZ);
+
+      //  Arrow key looking
+      if (keyCode == 38) {          //  Up
+        event.preventDefault();
+        ph += 3 * (Math.PI / 180);
+        if (ph <= 1.5)
+          camera.rotateX(3 * (Math.PI / 180));
+        ph =  Math.max(-1.5, Math.min(1.5, ph));
+      } else if (keyCode == 40) {   //  Down
+        event.preventDefault();
+        ph -= 3 * (Math.PI / 180);
+        if (ph >= -1.5)
+          camera.rotateX(-3 * (Math.PI / 180));
+        ph =  Math.max(-1.5, Math.min(1.5, ph));
+      } else if (keyCode == 37) {   //  Left
+        event.preventDefault();
+        th += 3 * (Math.PI / 180);
+        camera.rotateOnWorldAxis(new THREE.Vector3( 0, 1, 0 ), 3 * (Math.PI / 180));
+      } else if (keyCode == 39) {   //  Right
+        event.preventDefault();
+        th -= 3 * (Math.PI / 180);
+        camera.rotateOnWorldAxis(new THREE.Vector3( 0, 1, 0 ), -3 * (Math.PI / 180));
+      }
+      th %= 360;
+      //console.log('Player pos: ' + posX + ", " + posZ);
+      //console.log('Player rot: ' + th + ", " + ph);
+    };
+
+    //  Load models
+    const loader = new THREE.GLTFLoader();
+
+    loader.load('../../resources/models/ground.glb', function (gltf) {
+      scene.add(gltf.scene);
+    });
+    var tree;
+    loader.load('../../resources/models/treeA.glb', function (gltf) {
+      for (var i = 0; i < 100; i++) {
+        tree = gltf.scene.clone();
+        tree.position.set(treeArr[i][0], -0.5, treeArr[i][1]);
+        tree.rotation.set(0, Math.random() * 360, 0);
+        scene.add(tree);
+      }
+    });
+    loader.load('../../resources/models/treeB.glb', function (gltf) {
+      for (var i = 100; i < 200; i++) {
+        tree = gltf.scene.clone();
+        tree.position.set(treeArr[i][0], -0.5, treeArr[i][1]);
+        tree.rotation.set(0, Math.random() * 360, 0);
+        scene.add(tree);
+      }
+    });
+    loader.load('../../resources/models/treeC.glb', function (gltf) {
+      for (var i = 200; i < 300; i++) {
+        tree = gltf.scene.clone();
+        tree.position.set(treeArr[i][0], -0.5, treeArr[i][1]);
+        tree.rotation.set(0, Math.random() * 360, 0);
+        scene.add(tree);
+      }
+    });
+
+    //  Render the scene
+    const animate = function () {
+      requestAnimationFrame(animate);
+      cube.rotation.x += 0.01;
+			cube.rotation.y += 0.01;
+
+      renderer.render(scene, camera);
+    };
+    animate();
+
+  </script>
+
+</html>
